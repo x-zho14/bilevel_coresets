@@ -75,7 +75,7 @@ def continual_learning(args):
                                         inner_loss_fn=loss_utils.cross_entropy, out_dim=10, max_outer_it=1,
                                         max_inner_it=200, logging_period=1000)
     rs = np.random.RandomState(args.seed)
-    size_per_task = buffer_size / args.num_tasks
+    size_per_task = buffer_size // args.num_tasks
     for i in range(generator.max_iter):
         training_op.train(train_loaders[i])
         X, y, _, _ = tasks[i]
