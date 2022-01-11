@@ -42,9 +42,9 @@ def continual_learning(args):
     num_workers = args.num_workers
     pin_memory = device == 'cuda'
     if dataset == 'permmnist':
-        generator = datagen.PermutedMnistGenerator(samples_per_task)
+        generator = datagen.PermutedMnistGenerator(samples_per_task, args.num_tasks)
     elif dataset == 'splitmnist':
-        generator = datagen.SplitMnistGenerator(samples_per_task)
+        generator = datagen.SplitMnistGenerator(samples_per_task, args.num_tasks)
 
     tasks = []
     train_loaders = []
