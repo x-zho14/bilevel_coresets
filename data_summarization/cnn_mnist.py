@@ -1,3 +1,7 @@
+import sys
+import os
+sys.path.append(os.getcwd())
+
 import argparse
 import torch
 import numpy as np
@@ -12,6 +16,8 @@ from cl_streaming import ntk_generator
 import models
 import os
 import torch.nn.functional as F
+
+
 
 mnist_transform = transforms.Compose([
     transforms.ToTensor(),

@@ -1,3 +1,7 @@
+import sys
+import os
+sys.path.append(os.getcwd())
+
 import argparse
 import torch
 import numpy as np
@@ -71,13 +75,9 @@ def continual_learning(args):
                                         inner_loss_fn=loss_utils.cross_entropy, out_dim=10, max_outer_it=1,
                                         max_inner_it=200, logging_period=1000)
     rs = np.random.RandomState(args.seed)
+    size_per_task = buffer_size / args.num_tasks
     for i in range(generator.max_iter):
         training_op.train(train_loaders[i])
-        size_per_task = buffer_size // (i + 1)
-        for j in range(i):
-            (X, y), w = training_op.buffer[j]
-            X, y = X[:size_per_task], y[:size_per_task]
-            training_op.buffer[j] = ((X, y), np.ones(len(y)))
         X, y, _, _ = tasks[i]
         if method == 'coreset':
             chosen_inds, _, = bc.build_with_representer_proxy_batch(X, y, size_per_task, kernel_fn, cache_kernel=True,
@@ -112,6 +112,7 @@ if __name__ == '__main__':
     parser.add_argument('--buffer_size', default=100, type=int)
     parser.add_argument('--batch_size', default=256, type=int)
     parser.add_argument('--num_workers', default=0, type=int)
+    parser.add_argument('--num_tasks', default=10, type=int)
     args = parser.parse_args()
     print(args)
     seed = args.seed
