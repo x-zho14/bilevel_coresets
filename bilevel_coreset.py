@@ -143,6 +143,7 @@ class BilevelCoreset:
                 return kernel_fn(X[inds1], X[inds2])
 
         for i in range(start_size - 1, m):
+            print("get ith data")
             # calculate the kernel between the data and the selected points
             K_X_S = calc_kernel(np.arange(n), selected_inds)
 
